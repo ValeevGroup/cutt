@@ -54,7 +54,7 @@ void printMethod(int method) {
     printf("Unknown");
     return;
     break;
-  };  
+  };
 }
 
 //
@@ -100,7 +100,7 @@ void reduceRanks(const int rank, const int* dim, const int* permutation,
   // Re-order redDim
   for (int i=0;i < redDim.size();i++) {
     tmp[redPermutation[i]] = redDim[i];
-  }  
+  }
   for (int i=0;i < redDim.size();i++) {
     redDim[i] = tmp[i];
   }
@@ -304,6 +304,19 @@ bool operator==(const TensorSplit& lhs, const TensorSplit& rhs) {
     (lhs.volMmkOutCont == rhs.volMmkOutCont) &&
     (lhs.volMmk == rhs.volMmk) &&
     (lhs.volMbar == rhs.volMbar);
+  } else {
+    return
+    (lhs.sizeMm == rhs.sizeMm) &&
+    (lhs.volMm == rhs.volMm) &&
+    (lhs.sizeMk == rhs.sizeMk) &&
+    (lhs.volMk == rhs.volMk) &&
+    (lhs.sizeMmk == rhs.sizeMmk) &&
+    (lhs.volMmk == rhs.volMmk) &&
+    (lhs.sizeMkBar == rhs.sizeMkBar) &&
+    (lhs.volMkBar == rhs.volMkBar) &&
+    (lhs.sizeMbar == rhs.sizeMbar) &&
+    (lhs.volMbar == rhs.volMbar) &&
+    (lhs.numSplit == rhs.numSplit);
   }
 
   // if (lhs.method == Packed || lhs.method == PackedSplit) {
@@ -327,7 +340,7 @@ bool operator==(const TensorSplit& lhs, const TensorSplit& rhs) {
   //   (lhs.sizeMbar == rhs.sizeMbar) &&
   //   (lhs.volMbar == rhs.volMbar) &&
   //   // (lhs.numActiveBlock == rhs.numActiveBlock) &&
-  //   (lhs.numSplit == rhs.numSplit);    
+  //   (lhs.numSplit == rhs.numSplit);
   // }
 }
 
