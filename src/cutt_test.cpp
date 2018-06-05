@@ -49,7 +49,7 @@ cuttTimer* timerDouble;
 
 long long int* dataIn  = NULL;
 long long int* dataOut = NULL;
-int dataSize  = 200000000;
+int dataSize  = 20000000;
 TensorTester* tester = NULL;
 
 bool test1();
@@ -305,7 +305,7 @@ bool test3() {
     permutation[2] = 2;
     permutation[3] = 3;
     if (!test_tensor<long long int>(dim, permutation)) return false;
-    if (!test_tensor<int>(dim, permutation)) return false;    
+    if (!test_tensor<int>(dim, permutation)) return false;
   }
 
   {
@@ -325,7 +325,7 @@ bool test3() {
     permutation[4] = 4;
     permutation[5] = 5;
     if (!test_tensor<long long int>(dim, permutation)) return false;
-    if (!test_tensor<int>(dim, permutation)) return false;    
+    if (!test_tensor<int>(dim, permutation)) return false;
   }
 
   {
@@ -342,7 +342,7 @@ bool test3() {
     permutation[3] = 3 - 1;
     permutation[4] = 1 - 1;
     if (!test_tensor<long long int>(dim, permutation)) return false;
-    if (!test_tensor<int>(dim, permutation)) return false;        
+    if (!test_tensor<int>(dim, permutation)) return false;
   }
 
   {
@@ -359,7 +359,7 @@ bool test3() {
     permutation[3] = 2;
     permutation[4] = 4;
     if (!test_tensor<long long int>(dim, permutation)) return false;
-    if (!test_tensor<int>(dim, permutation)) return false;        
+    if (!test_tensor<int>(dim, permutation)) return false;
   }
 
   return true;
