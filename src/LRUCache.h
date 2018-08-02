@@ -26,6 +26,7 @@ SOFTWARE.
 #include <utility>
 #include <list>
 #include <unordered_map>
+#include <mutex>
 
 using namespace std;
 
@@ -54,12 +55,16 @@ private:
   // key = key
   // value = {value, pointer to linked list}
   unordered_map<key_type, ValueIterator> cache;
+  
+  // Mutex
+  std::mutex cache_lock;
 
 public:
   
   LRUCache(const size_t capacity, const value_type null_value) : capacity(capacity), null_value(null_value) {} 
  
   value_type get(key_type key) {
+    std::lock_guard<std::mutex> lock(cache_lock);
     auto it = cache.find(key);
     if (it == cache.end()) return null_value;
     touch(it);
@@ -67,6 +72,7 @@ public:
   }
   
   void set(key_type key, value_type value) {
+    std::lock_guard<std::mutex> lock(cache_lock);
     auto it = cache.find(key);
     if (it != cache.end()) {
       // key found
