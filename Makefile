@@ -26,7 +26,8 @@
 #################### User Settings ####################
 
 # C++ compiler
-CC = g++
+HOST_CC = g++
+GPU_CC = /usr/bin/g++
 
 # CUDA compiler
 CUDAC = nvcc
@@ -39,7 +40,7 @@ GENCODE_SM35  := -gencode arch=compute_35,code=sm_35
 GENCODE_SM50  := -gencode arch=compute_50,code=sm_50
 GENCODE_SM52  := -gencode arch=compute_52,code=sm_52
 GENCODE_SM60  := -gencode arch=compute_60,code=sm_60
-GENCODE_FLAGS := $(GENCODE_SM35) $(GENCODE_SM52) $(GENCODE_SM60)
+GENCODE_FLAGS := $(GENCODE_SM52)
 
 #######################################################
 
@@ -86,21 +87,22 @@ OBJSTEST = build/cutt_test.o build/TensorTester.o build/CudaUtils.o build/cuttTi
 OBJSBENCH = build/cutt_bench.o build/TensorTester.o build/CudaUtils.o build/cuttTimer.o build/CudaMemcpy.o
 OBJS = $(OBJSLIB) $(OBJSTEST) $(OBJSBENCH)
 
-#CUDAROOT = $(subst /bin/,,$(dir $(shell which nvcc)))
 CUDAROOT = $(subst /bin/,,$(dir $(shell which $(CUDAC))))
 
-CFLAGS = -I${CUDAROOT}/include -std=c++11 $(DEFS) $(OPTLEV)
+CFLAGS = -I${CUDAROOT}/include -std=c++11 $(DEFS) $(OPTLEV) -fPIC
 ifeq ($(CPU),x86_64)
 CFLAGS += -march=native
 endif
 
-CUDA_CFLAGS = -I${CUDAROOT}/include -std=c++11 $(OPTLEV) -Xptxas -dlcm=ca -lineinfo $(GENCODE_FLAGS) --resource-usage -Xcompiler "$(CUDA_CCFLAGS)" $(DEFS) -D_FORCE_INLINES
+CUDA_CFLAGS = -ccbin $(GPU_CC) -I${CUDAROOT}/include -std=c++11 $(OPTLEV) -Xptxas -dlcm=ca -lineinfo $(GENCODE_FLAGS) --resource-usage -Xcompiler "$(CUDA_CCFLAGS)" $(DEFS) -Xcompiler -fPIC -D_FORCE_INLINES
 
 ifeq ($(OS),osx)
 CUDA_LFLAGS = -L$(CUDAROOT)/lib
 else
 CUDA_LFLAGS = -L$(CUDAROOT)/lib64
 endif
+
+CUDA_LFLAGS += -fPIC
 
 CUDA_LFLAGS += -Llib -lcudart -lcutt
 ifdef ENABLE_NVTOOLS
@@ -121,13 +123,13 @@ lib/libcutt.a: $(OBJSLIB)
 
 bin/cutt_test : lib/libcutt.a $(OBJSTEST)
 	mkdir -p bin
-	$(CC) -o bin/cutt_test $(OBJSTEST) $(CUDA_LFLAGS)
+	$(HOST_CC) -o bin/cutt_test $(OBJSTEST) $(CUDA_LFLAGS)
 
 bin/cutt_bench : lib/libcutt.a $(OBJSBENCH)
 	mkdir -p bin
-	$(CC) -o bin/cutt_bench $(OBJSBENCH) $(CUDA_LFLAGS)
+	$(HOST_CC) -o bin/cutt_bench $(OBJSBENCH) $(CUDA_LFLAGS)
 
-clean: 
+clean:
 	rm -f $(OBJS)
 	rm -f build/*.d
 	rm -f *~
@@ -144,6 +146,6 @@ build/%.o : src/%.cu
 	$(CUDAC) -M $(CUDA_CFLAGS) $< >> build/$*.d
 
 build/%.o : src/%.cpp
-	$(CC) -c $(CFLAGS) -o build/$*.o $<
+	$(HOST_CC) -c $(CFLAGS) -o build/$*.o $<
 	echo -e 'build/\c' > build/$*.d
-	$(CC) -M $(CFLAGS) $< >> build/$*.d
+	$(HOST_CC) -M $(CFLAGS) $< >> build/$*.d

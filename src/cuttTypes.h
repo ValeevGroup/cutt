@@ -40,7 +40,6 @@ struct TensorConvInOut {
   int c_out;
   int d_out;
   int ct_out;
-  
 };
 
 #endif // CUTTTYPES_H

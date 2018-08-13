@@ -65,7 +65,6 @@ std::default_random_engine generator;
 bool bench1(int numElem);
 bool bench2(int numElem);
 bool bench3(int numElem);
-bool bench4();
 template <typename T> bool bench5(int numElem, int ratio);
 bool bench6();
 template <typename T> bool bench7();
@@ -453,12 +452,6 @@ bool bench3(int numElem) {
   }
 
   return true;
-}
-
-//
-// Benchmark 4: specific examples
-//
-bool bench4() {
 }
 
 template <typename T>
