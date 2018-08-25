@@ -30,21 +30,29 @@ SOFTWARE.
 #include "cuttkernel.h"
 #include "cuttTimer.h"
 #include "cutt.h"
+#include <atomic>
+#include <mutex>
 // #include <chrono>
 
 // Hash table to store the plans
-static std::unordered_map< cuttHandle, cuttPlan_t* > planStorage;
+static std::unordered_map<cuttHandle, cuttPlan_t* > planStorage;
+static std::mutex planStorageMutex;
 
 // Current handle
-static cuttHandle curHandle = 0;
+static std::atomic<cuttHandle> curHandle(0);
 
 // Table of devices that have been initialized
 static std::unordered_map<int, cudaDeviceProp> deviceProps;
+static std::mutex devicePropsMutex;
 
 // Checks prepares device if it's not ready yet and returns device properties
 // Also sets shared memory configuration
 void getDeviceProp(int& deviceID, cudaDeviceProp &prop) {
   cudaCheck(cudaGetDevice(&deviceID));
+
+  // need to lock this function	
+  std::lock_guard<std::mutex> lock(devicePropsMutex);
+
   auto it = deviceProps.find(deviceID);
   if (it == deviceProps.end()) {
     // Get device properties and store it for later use
@@ -97,7 +105,10 @@ cuttResult cuttPlan(cuttHandle* handle, int rank, int* dim, int* permutation, si
   curHandle++;
 
   // Check that the current handle is available (it better be!)
-  if (planStorage.count(*handle) != 0) return CUTT_INTERNAL_ERROR;
+  {
+    std::lock_guard<std::mutex> lock(planStorageMutex);
+    if (planStorage.count(*handle) != 0) return CUTT_INTERNAL_ERROR;
+  }
 
   // Prepare device
   int deviceID;
@@ -174,7 +185,10 @@ cuttResult cuttPlan(cuttHandle* handle, int rank, int* dim, int* permutation, si
   plan->activate();
 
   // Insert plan into storage
-  planStorage.insert( {*handle, plan} );
+  {
+    std::lock_guard<std::mutex> lock(planStorageMutex);
+    planStorage.insert( {*handle, plan} );
+  }
 
 #ifdef ENABLE_NVTOOLS
   gpuRangeStop();
@@ -197,7 +211,10 @@ cuttResult cuttPlanMeasure(cuttHandle* handle, int rank, int* dim, int* permutat
   curHandle++;
 
   // Check that the current handle is available (it better be!)
-  if (planStorage.count(*handle) != 0) return CUTT_INTERNAL_ERROR;
+  {
+    std::lock_guard<std::mutex> lock(planStorageMutex);
+    if (planStorage.count(*handle) != 0) return CUTT_INTERNAL_ERROR;
+  }
 
   // Prepare device
   int deviceID;
@@ -278,22 +295,27 @@ cuttResult cuttPlanMeasure(cuttHandle* handle, int rank, int* dim, int* permutat
   plan->activate();
 
   // Insert plan into storage
-  planStorage.insert( {*handle, plan} );
+  {
+    std::lock_guard<std::mutex> lock(planStorageMutex);
+    planStorage.insert( {*handle, plan} );
+  }
 
   return CUTT_SUCCESS;
 }
 
 cuttResult cuttDestroy(cuttHandle handle) {
+  std::lock_guard<std::mutex> lock(planStorageMutex);
   auto it = planStorage.find(handle);
   if (it == planStorage.end()) return CUTT_INVALID_PLAN;
   // Delete instance of cuttPlan_t
   delete it->second;
   // Delete entry from plan storage
   planStorage.erase(it);
-  return CUTT_SUCCESS;
 }
 
 cuttResult cuttExecute(cuttHandle handle, void* idata, void* odata) {
+  // prevent modification when find
+  std::lock_guard<std::mutex> lock(planStorageMutex);
   auto it = planStorage.find(handle);
   if (it == planStorage.end()) return CUTT_INVALID_PLAN;
 
