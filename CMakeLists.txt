@@ -17,7 +17,7 @@ message(STATUS "CUDA Libraries:    ${CUDA_LIBRARIES}")
 list(APPEND CUDA_NVCC_FLAGS "-std=c++11")
 
 if(ENABLE_NVTOOLS)
-    add_compile_definitions(ENABLE_NVTOOLS=1)
+    add_definitions(-DENABLE_NVTOOLS)
     list(APPEND CUDA_NVCC_FLAGS -lnvToolsExt)
 endif()
 
@@ -27,11 +27,11 @@ include(CheckFunctionExists)
 
 # if to use cuTT aligned_alloc
 if(ENABLE_NO_ALIGNED_ALLOC)
-    add_compile_definitions(NO_ALIGNED_ALLOC=1)
+    add_definitions(-DNO_ALIGNED_ALLOC)
 else()
     CHECK_FUNCTION_EXISTS(alligned_alloc HAVE_ALLIGNED_ALLOC)
     if(NOT HAVE_ALLIGNED_ALLOC)
-        add_compile_definitions(NO_ALIGNED_ALLOC=1)
+        add_definitions(-DNO_ALIGNED_ALLOC)
     endif()
 endif()
 
