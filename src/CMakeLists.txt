@@ -1,6 +1,8 @@
 
 set(CUTT_SOURCE_FILES
     calls.h
+    CudaMem.cpp
+    CudaMem.h
     CudaMemcpy.cu
     CudaMemcpy.h
     CudaUtils.cu
@@ -25,6 +27,7 @@ set(CUTT_SOURCE_FILES
 
 
 cuda_add_library(cutt ${CUTT_SOURCE_FILES})
+target_link_libraries(cutt umpire)
 
 
 # install library and include

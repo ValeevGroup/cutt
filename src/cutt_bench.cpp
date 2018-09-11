@@ -32,6 +32,7 @@ SOFTWARE.
 #include <random>
 #include "cutt.h"
 #include "CudaUtils.h"
+#include "CudaMem.h"
 #include "TensorTester.h"
 #include "cuttTimer.h"
 #include "CudaMemcpy.h"

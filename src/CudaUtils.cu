@@ -39,29 +39,7 @@ void set_device_array_T(void *data, int value, const size_t ndata, const size_t 
   cudaCheck(cudaMemset(data, value, sizeofT*ndata));
 }
 
-//----------------------------------------------------------------------------------------
-//
-// Allocate gpu memory
-// pp = memory pointer
-// len = length of the array
-//
-void allocate_device_T(void **pp, const size_t len, const size_t sizeofT) {
-  cudaCheck(cudaMalloc(pp, sizeofT*len));
-}
 
-//----------------------------------------------------------------------------------------
-//
-// Deallocate gpu memory
-// pp = memory pointer
-//
-void deallocate_device_T(void **pp) {
-  
-  if (*pp != NULL) {
-    cudaCheck(cudaFree((void *)(*pp)));
-    *pp = NULL;
-  }
-
-}
 
 //----------------------------------------------------------------------------------------
 //

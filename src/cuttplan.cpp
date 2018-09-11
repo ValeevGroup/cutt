@@ -28,6 +28,7 @@ SOFTWARE.
 #include <cmath>
 #include <random>
 #include "CudaUtils.h"
+#include "CudaMem.h"
 #include "cuttplan.h"
 #include "cuttkernel.h"
 #include "cuttGpuModel.h"

@@ -29,6 +29,7 @@ SOFTWARE.
 #include <cmath>
 #include "cutt.h"
 #include "CudaUtils.h"
+#include "CudaMem.h"
 #include "TensorTester.h"
 #include "cuttTimer.h"
 #include "cuttGpuModel.h"  // testCounters

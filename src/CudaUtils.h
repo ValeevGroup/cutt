@@ -54,28 +54,7 @@ void set_device_array_sync(T *data, int value, const size_t ndata) {
   set_device_array_T(data, value, ndata, sizeof(T));
 }
 
-void allocate_device_T(void **pp, const size_t len, const size_t sizeofT);
-//----------------------------------------------------------------------------------------
-//
-// Allocate gpu memory
-// pp = memory pointer
-// len = length of the array
-//
-template <class T>
-void allocate_device(T **pp, const size_t len) {
-  allocate_device_T((void **)pp, len, sizeof(T));
-}
 
-void deallocate_device_T(void **pp);
-//----------------------------------------------------------------------------------------
-//
-// Deallocate gpu memory
-// pp = memory pointer
-//
-template <class T>
-void deallocate_device(T **pp) {
-  deallocate_device_T((void **)pp);
-}
 //----------------------------------------------------------------------------------------
 
 void copy_HtoD_async_T(const void *h_array, void *d_array, size_t array_len, cudaStream_t stream,
