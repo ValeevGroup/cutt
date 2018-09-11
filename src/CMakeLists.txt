@@ -27,8 +27,9 @@ set(CUTT_SOURCE_FILES
 
 
 cuda_add_library(cutt ${CUTT_SOURCE_FILES})
-target_link_libraries(cutt umpire)
-
+if(ENABLE_UMPIRE)
+    target_link_libraries(cutt umpire)
+endif()
 
 # install library and include
 install(TARGETS cutt
