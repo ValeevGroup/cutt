@@ -16,7 +16,7 @@ auto& rm = umpire::ResourceManager::getInstance();
 auto dynamic_pool = rm.makeAllocator<umpire::strategy::DynamicPool>(
         "GPUDynamicPool", rm.getAllocator("DEVICE"));
 umpire::Allocator ts_dynamic_pool = rm.makeAllocator<umpire::strategy::ThreadSafeAllocator>(
-        "ThreadSafeUMDynamicPool", rm.getAllocator("GPUDynamicPool"));
+        "ThreadSafeGPUDynamicPool", rm.getAllocator("GPUDynamicPool"));
 
 
 #endif
