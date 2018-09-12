@@ -32,7 +32,6 @@ SOFTWARE.
 #include "cuttplan.h"
 #include "cuttkernel.h"
 #include "cuttGpuModel.h"
-#include "cuttGpuModelKernel.h"
 
 void printMethod(int method) {
   switch(method) {
