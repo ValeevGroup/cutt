@@ -303,14 +303,22 @@ cuttResult cuttPlanMeasure(cuttHandle* handle, int rank, int* dim, int* permutat
   return CUTT_SUCCESS;
 }
 
+void CUDART_CB cuttDestroy_callback(cudaStream_t stream, cudaError_t status, void *userData){
+  cuttPlan_t* plan = (cuttPlan_t*) userData;
+  delete plan;
+}
+
 cuttResult cuttDestroy(cuttHandle handle) {
   std::lock_guard<std::mutex> lock(planStorageMutex);
   auto it = planStorage.find(handle);
   if (it == planStorage.end()) return CUTT_INVALID_PLAN;
-  // Delete instance of cuttPlan_t
-  delete it->second;
+  // get the pointer cuttPlan_t
+  cuttPlan_t* plan = it->second;
+  cudaStream_t stream = plan->stream;
   // Delete entry from plan storage
   planStorage.erase(it);
+  // register callback to deallocate plan
+  cudaStreamAddCallback(stream, cuttDestroy_callback, plan, 0);
 }
 
 cuttResult cuttExecute(cuttHandle handle, void* idata, void* odata) {
