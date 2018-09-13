@@ -16,7 +16,7 @@ message(STATUS "CUDA version:      ${CUDA_VERSION_STRING}")
 message(STATUS "CUDA Include Path: ${CUDA_INCLUDE_DIRS}")
 message(STATUS "CUDA Libraries:    ${CUDA_LIBRARIES}")
 
-list(APPEND CUDA_NVCC_FLAGS "-std=c++11")
+list(APPEND CUDA_NVCC_FLAGS "--std;c++11")
 
 # ENABLE_NVTOOLS
 if(ENABLE_NVTOOLS)

@@ -82,9 +82,9 @@ ifdef NO_ALIGNED_ALLOC
 DEFS += -DNO_ALIGNED_ALLOC
 endif
 
-OBJSLIB = build/cutt.o build/cuttplan.o build/cuttkernel.o build/cuttGpuModel.o build/CudaUtils.o build/cuttTimer.o build/cuttGpuModelKernel.o
-OBJSTEST = build/cutt_test.o build/TensorTester.o build/CudaUtils.o build/cuttTimer.o
-OBJSBENCH = build/cutt_bench.o build/TensorTester.o build/CudaUtils.o build/cuttTimer.o build/CudaMemcpy.o
+OBJSLIB = build/cutt.o build/cuttplan.o build/cuttkernel.o build/cuttGpuModel.o build/CudaMem.o build/CudaUtils.o build/cuttTimer.o build/cuttGpuModelKernel.o
+OBJSTEST = build/cutt_test.o build/TensorTester.o build/CudaMem.o build/CudaUtils.o build/cuttTimer.o
+OBJSBENCH = build/cutt_bench.o build/TensorTester.o build/CudaMem.o build/CudaUtils.o build/cuttTimer.o build/CudaMemcpy.o
 OBJS = $(OBJSLIB) $(OBJSTEST) $(OBJSBENCH)
 
 CUDAROOT = $(subst /bin/,,$(dir $(shell which $(CUDAC))))
