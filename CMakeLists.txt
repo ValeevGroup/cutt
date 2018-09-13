@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.8.2)
 enable_language(CUDA)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_CUDA_STANDARD 11)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 include(CheckFunctionExists)
@@ -16,7 +17,10 @@ message(STATUS "CUDA version:      ${CUDA_VERSION_STRING}")
 message(STATUS "CUDA Include Path: ${CUDA_INCLUDE_DIRS}")
 message(STATUS "CUDA Libraries:    ${CUDA_LIBRARIES}")
 
-list(APPEND CUDA_NVCC_FLAGS "--std;c++11")
+list(FIND CUDA_NVCC_FLAGS "std" CUDA_STANDARD_FLAG)
+if(CUDA_STANDARD_FLAG EQUAL -1)
+    list(APPEND CUDA_NVCC_FLAGS "--std;c++11")
+endif()
 
 # ENABLE_NVTOOLS
 if(ENABLE_NVTOOLS)
