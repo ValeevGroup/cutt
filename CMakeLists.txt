@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.8.2)
-enable_language(CUDA)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -17,6 +16,7 @@ message(STATUS "CUDA version:      ${CUDA_VERSION_STRING}")
 message(STATUS "CUDA Include Path: ${CUDA_INCLUDE_DIRS}")
 message(STATUS "CUDA Libraries:    ${CUDA_LIBRARIES}")
 
+message(STATUS "Original CUDA_NVCC_FLAGS: ${CUDA_NVCC_FLAGS}")
 list(FIND CUDA_NVCC_FLAGS "--std" CUDA_STANDARD_FLAG)
 if(CUDA_STANDARD_FLAG EQUAL -1)
     list(APPEND CUDA_NVCC_FLAGS "--std;c++11")
@@ -28,7 +28,7 @@ if(ENABLE_NVTOOLS)
     list(APPEND CUDA_NVCC_FLAGS -lnvToolsExt)
 endif()
 
-message(STATUS "CUDA_NVCC_FLAGS: ${CUDA_NVCC_FLAGS}")
+message(STATUS "Current CUDA_NVCC_FLAGS: ${CUDA_NVCC_FLAGS}")
 
 
 # ENABLE_NO_ALIGNED_ALLOC
