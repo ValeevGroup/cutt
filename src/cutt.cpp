@@ -326,6 +326,7 @@ cuttResult cuttDestroy(cuttHandle handle) {
   // Delete entry from plan storage	  
   planStorage.erase(it);
 #endif
+  return CUTT_SUCCESS;
 }
 
 cuttResult cuttExecute(cuttHandle handle, void* idata, void* odata) {
