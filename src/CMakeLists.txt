@@ -26,7 +26,7 @@ set(CUTT_SOURCE_FILES
     LRUCache.h)
 
 
-cuda_add_library(cutt ${CUTT_SOURCE_FILES})
+add_library(cutt ${CUTT_SOURCE_FILES})
 if(ENABLE_UMPIRE)
     target_link_libraries(cutt umpire)
 endif()

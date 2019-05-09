@@ -1,31 +1,27 @@
-cmake_minimum_required(VERSION 3.8.2)
+cmake_minimum_required(VERSION 3.10)
+
+# enable CXX
+enable_language(CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# enable cuda
+enable_language(CUDA)
+
 set(CMAKE_CUDA_STANDARD 11)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-include(CheckFunctionExists)
+
+message(STATUS "CUDA Include Dirs: " ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+message(STATUS "CUDA Host Compiler: " ${CMAKE_CUDA_HOST_COMPILER})
+
+include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 
 option(ENABLE_NVTOOLS "Enable nvvp profiling of CPU code" OFF)
 option(ENABLE_NO_ALIGNED_ALLOC "Enable aligned_alloc() function implemented in cuTT" OFF)
 option(ENABLE_UMPIRE "Enable umpire for memory management" OFF)
+include(CheckFunctionExists)
 
 
-# find cuda
-enable_language(CUDA)
-FIND_PACKAGE(CUDA REQUIRED)
-message(STATUS "CUDA version:      ${CUDA_VERSION_STRING}")
-message(STATUS "CUDA Include Path: ${CUDA_INCLUDE_DIRS}")
-message(STATUS "CUDA Libraries:    ${CUDA_LIBRARIES}")
-set(CUDA_HOST_COMPILER ${CMAKE_CUDA_HOST_COMPILER})
-message(STATUS "CUDA CXX Compiler:    ${CUDA_HOST_COMPILER}")
-
-
-message(STATUS "Original CUDA_NVCC_FLAGS: ${CUDA_NVCC_FLAGS}")
-list(FIND CUDA_NVCC_FLAGS "--std" CUDA_STANDARD_FLAG)
-if(CUDA_STANDARD_FLAG EQUAL -1)
-    list(APPEND CUDA_NVCC_FLAGS "--std;c++11")
-endif()
 
 # ENABLE_NVTOOLS
 if(ENABLE_NVTOOLS)
