@@ -10,12 +10,15 @@ option(ENABLE_NVTOOLS "Enable nvvp profiling of CPU code" OFF)
 option(ENABLE_NO_ALIGNED_ALLOC "Enable aligned_alloc() function implemented in cuTT" OFF)
 option(ENABLE_UMPIRE "Enable umpire for memory management" OFF)
 
+set(CUDA_HOST_COMPILER ${CMAKE_CUDA_HOST_COMPILER})
+
 # find cuda
 FIND_PACKAGE(CUDA REQUIRED)
 message(STATUS "CUDA version:      ${CUDA_VERSION_STRING}")
 message(STATUS "CUDA Include Path: ${CUDA_INCLUDE_DIRS}")
 message(STATUS "CUDA Libraries:    ${CUDA_LIBRARIES}")
 message(STATUS "CUDA CXX Compiler:    ${CUDA_HOST_COMPILER}")
+
 
 message(STATUS "Original CUDA_NVCC_FLAGS: ${CUDA_NVCC_FLAGS}")
 list(FIND CUDA_NVCC_FLAGS "--std" CUDA_STANDARD_FLAG)
