@@ -33,6 +33,7 @@ SOFTWARE.
 #include "cutt.h"
 #include <atomic>
 #include <mutex>
+#include <cstdlib>
 // #include <chrono>
 
 // global Umpire allocator
@@ -355,9 +356,11 @@ cuttResult cuttExecute(cuttHandle handle, void* idata, void* odata) {
 
 void cuttInitialize() {
 #ifdef CUTT_HAS_UMPIRE
+  const char* alloc_env_var = std::getenv("CUTT_USES_THIS_UMPIRE_ALLOCATOR");
 #define __CUTT_STRINGIZE(x) #x
 #define __CUTT_XSTRINGIZE(x) __CUTT_STRINGIZE(x)
-  cutt_umpire_allocator = umpire::ResourceManager::getInstance().getAllocator(__CUTT_XSTRINGIZE(CUTT_USES_THIS_UMPIRE_ALLOCATOR));
+  const char* alloc_cstr = alloc_env_var ? alloc_env_var : __CUTT_XSTRINGIZE(CUTT_USES_THIS_UMPIRE_ALLOCATOR);
+  cutt_umpire_allocator = umpire::ResourceManager::getInstance().getAllocator(alloc_cstr);
 #endif
 }
 
