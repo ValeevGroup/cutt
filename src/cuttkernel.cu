@@ -846,7 +846,7 @@ bool cuttKernel(cuttPlan_t& plan, void* dataIn, void* dataOut) {
     case Trivial:
     {
       cudaCheck(cudaMemcpyAsync(dataOut, dataIn, ts.volMmk*ts.volMbar*plan.sizeofType,
-        cudaMemcpyDeviceToDevice, plan.stream));
+        cudaMemcpyDefault, plan.stream));
     }
     break;
 
