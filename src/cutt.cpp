@@ -312,7 +312,7 @@ cuttResult cuttDestroy(cuttHandle handle) {
   std::lock_guard<std::mutex> lock(planStorageMutex);
   auto it = planStorage.find(handle);
   if (it == planStorage.end()) return CUTT_INVALID_PLAN;
-#ifdef HAVE_UMPIRE
+#ifdef CUTT_HAS_UMPIRE
   // get the pointer cuttPlan_t
   cuttPlan_t* plan = it->second;
   cudaStream_t stream = plan->stream;

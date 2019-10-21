@@ -45,9 +45,11 @@ endif()
 
 # ENABLE_UMPIRE
 if (ENABLE_UMPIRE)
-    set(umpire_DIR ${UMPIRE_INSTALL_DIR}/share/umpire/cmake)
     find_package(umpire REQUIRED)
-    add_definitions(-DHAVE_UMPIRE)
+    if (NOT CUTT_USES_THIS_UMPIRE_ALLOCATOR)
+        set(CUTT_USES_THIS_UMPIRE_ALLOCATOR "UM")
+    endif(NOT CUTT_USES_THIS_UMPIRE_ALLOCATOR)
+    message(STATUS "Will use Umpire allocator named \"${CUTT_USES_THIS_UMPIRE_ALLOCATOR}\"")
 endif ()
 
 add_subdirectory(src)

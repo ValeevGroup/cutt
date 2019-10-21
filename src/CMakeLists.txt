@@ -29,6 +29,7 @@ set(CUTT_SOURCE_FILES
 add_library(cutt ${CUTT_SOURCE_FILES})
 if(ENABLE_UMPIRE)
     target_link_libraries(cutt umpire)
+    target_compile_definitions(cutt PUBLIC CUTT_HAS_UMPIRE -DCUTT_USES_THIS_UMPIRE_ALLOCATOR=${CUTT_USES_THIS_UMPIRE_ALLOCATOR})
 endif()
 
 # install library and include
