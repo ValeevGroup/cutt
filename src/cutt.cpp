@@ -26,6 +26,7 @@ SOFTWARE.
 #include <list>
 #include <unordered_map>
 #include "CudaUtils.h"
+#include "CudaMem.h"
 #include "cuttplan.h"
 #include "cuttkernel.h"
 #include "cuttTimer.h"
@@ -33,6 +34,11 @@ SOFTWARE.
 #include <atomic>
 #include <mutex>
 // #include <chrono>
+
+// global Umpire allocator
+#ifdef CUTT_HAS_UMPIRE
+umpire::Allocator cutt_umpire_allocator;
+#endif
 
 // Hash table to store the plans
 static std::unordered_map<cuttHandle, cuttPlan_t* > planStorage;
@@ -345,4 +351,13 @@ cuttResult cuttExecute(cuttHandle handle, void* idata, void* odata) {
 
   if (!cuttKernel(plan, idata, odata)) return CUTT_INTERNAL_ERROR;
   return CUTT_SUCCESS;
+}
+
+void cuttInitialize() {
+#ifdef CUTT_HAS_UMPIRE
+  cutt_umpire_allocator = umpire::ResourceManager::getInstance().getAllocator(CUTT_USES_THIS_UMPIRE_ALLOCATOR);
+#endif
+}
+
+void cuttFinalize() {
 }

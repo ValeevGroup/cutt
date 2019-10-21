@@ -27,6 +27,13 @@ SOFTWARE.
 
 #include "CudaUtils.h"
 
+#ifdef CUTT_HAS_UMPIRE
+#include <umpire/Umpire.hpp>
+
+// defined in cutt.cpp
+extern umpire::Allocator cutt_umpire_allocator;
+#endif
+
 void allocate_device_T(void **pp, const size_t len, const size_t sizeofT);
 //----------------------------------------------------------------------------------------
 //

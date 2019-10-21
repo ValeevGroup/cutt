@@ -1,16 +1,6 @@
 
 #include "CudaMem.h"
 
-#ifdef CUTT_HAS_UMPIRE
-#include <umpire/Umpire.hpp>
-#endif
-
-
-// global Umpire allocator
-#ifdef CUTT_HAS_UMPIRE
-auto cutt_umpire_allocator = umpire::ResourceManager::getInstance().getAllocator(CUTT_USES_THIS_UMPIRE_ALLOCATOR);
-#endif
-
 //----------------------------------------------------------------------------------------
 //
 // Allocate gpu memory
