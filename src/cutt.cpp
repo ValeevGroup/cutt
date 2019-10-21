@@ -355,7 +355,8 @@ cuttResult cuttExecute(cuttHandle handle, void* idata, void* odata) {
 
 void cuttInitialize() {
 #ifdef CUTT_HAS_UMPIRE
-  cutt_umpire_allocator = umpire::ResourceManager::getInstance().getAllocator(CUTT_USES_THIS_UMPIRE_ALLOCATOR);
+#define __CUTT_STRINGIZE(x) #x
+  cutt_umpire_allocator = umpire::ResourceManager::getInstance().getAllocator(__CUTT_STRINGIZE(CUTT_USES_THIS_UMPIRE_ALLOCATOR));
 #endif
 }
 
