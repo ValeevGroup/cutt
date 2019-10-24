@@ -38,6 +38,7 @@ include(CheckFunctionExists)
 if(ENABLE_NVTOOLS)
     add_definitions(-DENABLE_NVTOOLS)
     list(APPEND CUDA_NVCC_FLAGS -lnvToolsExt)
+    link_libraries(-lnvToolsExt)
 endif()
 
 message(STATUS "Current CUDA_NVCC_FLAGS: ${CUDA_NVCC_FLAGS}")
