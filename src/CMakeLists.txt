@@ -43,7 +43,7 @@ install(FILES cutt.h
         DESTINATION include
         )
 
-add_executable(cutt_bench cutt_bench.cpp)
+add_executable(cutt_bench EXCLUDE_FROM_ALL cutt_bench.cpp)
 target_link_libraries(cutt_bench PUBLIC cutt)
 
 add_executable(cutt_test cutt_test.cpp)
