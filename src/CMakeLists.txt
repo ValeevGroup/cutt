@@ -46,7 +46,7 @@ install(FILES cutt.h
 add_executable(cutt_bench EXCLUDE_FROM_ALL cutt_bench.cpp)
 target_link_libraries(cutt_bench PUBLIC cutt)
 
-add_executable(cutt_test cutt_test.cpp)
+add_executable(cutt_test EXCLUDE_FROM_ALL cutt_test.cpp)
 target_link_libraries(cutt_test PUBLIC cutt)
 
 
